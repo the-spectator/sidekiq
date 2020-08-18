@@ -5,7 +5,7 @@ require "sidekiq/extensions/generic_proxy"
 module Sidekiq
   module Extensions
     ##
-    # Adds `delay`, `delay_for` and `delay_until` methods to all Classes to offload class method
+    # Adds +delay+, +delay_for+ and +delay_until+ methods to all Classes to offload class method
     # execution to Sidekiq.
     #
     # @example

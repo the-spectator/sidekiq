@@ -7,62 +7,62 @@ module Sidekiq
   # (pushing jobs onto the queue) as well as the server
   # side (when jobs are actually processed).
   #
-  # To add middleware for the client:
+  # @example To add middleware for the client:
   #
-  # Sidekiq.configure_client do |config|
-  #   config.client_middleware do |chain|
-  #     chain.add MyClientHook
+  #   Sidekiq.configure_client do |config|
+  #     config.client_middleware do |chain|
+  #       chain.add MyClientHook
+  #     end
   #   end
-  # end
   #
-  # To modify middleware for the server, just call
-  # with another block:
+  # @example To modify middleware for the server, just call with another block:
   #
-  # Sidekiq.configure_server do |config|
-  #   config.server_middleware do |chain|
-  #     chain.add MyServerHook
-  #     chain.remove ActiveRecord
+  #   Sidekiq.configure_server do |config|
+  #     config.server_middleware do |chain|
+  #       chain.add MyServerHook
+  #       chain.remove ActiveRecord
+  #     end
   #   end
-  # end
   #
-  # To insert immediately preceding another entry:
+  # @example To insert immediately preceding another entry:
   #
-  # Sidekiq.configure_client do |config|
-  #   config.client_middleware do |chain|
-  #     chain.insert_before ActiveRecord, MyClientHook
+  #   Sidekiq.configure_client do |config|
+  #     config.client_middleware do |chain|
+  #       chain.insert_before ActiveRecord, MyClientHook
+  #     end
   #   end
-  # end
   #
-  # To insert immediately after another entry:
+  # @example To insert immediately after another entry:
   #
-  # Sidekiq.configure_client do |config|
-  #   config.client_middleware do |chain|
-  #     chain.insert_after ActiveRecord, MyClientHook
+  #   Sidekiq.configure_client do |config|
+  #     config.client_middleware do |chain|
+  #       chain.insert_after ActiveRecord, MyClientHook
+  #     end
   #   end
-  # end
   #
-  # This is an example of a minimal server middleware:
+  # @example This is an example of a minimal server middleware:
   #
-  # class MyServerHook
-  #   def call(worker_instance, msg, queue)
-  #     puts "Before work"
-  #     yield
-  #     puts "After work"
+  #   class MyServerHook
+  #     def call(worker_instance, msg, queue)
+  #       puts "Before work"
+  #       yield
+  #       puts "After work"
+  #     end
   #   end
-  # end
   #
-  # This is an example of a minimal client middleware, note
-  # the method must return the result or the job will not push
-  # to Redis:
+  # @example This is an example of a minimal client middleware
+  #   @note 
+  #     the method must return the result or the job will not push
+  #     to Redis:
   #
-  # class MyClientHook
-  #   def call(worker_class, msg, queue, redis_pool)
-  #     puts "Before push"
-  #     result = yield
-  #     puts "After push"
-  #     result
+  #   class MyClientHook
+  #     def call(worker_class, msg, queue, redis_pool)
+  #       puts "Before push"
+  #       result = yield
+  #       puts "After push"
+  #       result
+  #     end
   #   end
-  # end
   #
   module Middleware
     class Chain
